@@ -1,0 +1,40 @@
+.sidebar {
+    will-change: transform;
+  }
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#map{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    
+}
+#contenido{
+    position: absolute;
+    z-index: 6;
+    height: 87%;
+    background-color: rgba(255, 255, 255, 0.76);
+    margin-top: 5%;
+    margin-left: 2%;
+}
+#menu{
+    position: absolute;
+    z-index: 6;
+    background-color: rgba(255, 255, 255, 0.897);
+    
+   
+    
+}
+#detalles{
+   margin: 4px;
+}
+.rond{
+    border-radius: 15px;
+}
+.option{
+    background-color: bisque;
+}
