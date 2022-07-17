@@ -38,3 +38,8 @@
 .option{
     background-color: bisque;
 }
+#opcionMarker{
+    border-radius: 10px;
+    display: inline-flex;
+}
+

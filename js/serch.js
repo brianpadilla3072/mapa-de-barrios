@@ -12,7 +12,7 @@ function mostrarMapa(segmento) {
 
   jason.features.forEach((s) => {
     //RECORREMOS EL OBJETO
-    if (s.properties.name == segmento) {
+    if (s.properties.name.toLocaleLowerCase() == segmento.toLowerCase()) {
       // VERIFICAMOS QUE EL NOMBRE SEA IGUAL AL INGRESADO EN EL IMPUT
       function geo() {
         //objeto del segmento selecionado
@@ -40,24 +40,20 @@ function mostrarMapa(segmento) {
   });
 }
 
-function Sugerencias(buscarBarrios, url) {
+function Sugerencias(buscarBarrios) {
   // funcion buscador recibe dosparametros el que se enviay donde se envia
-  $.ajax({
-    url: url, //rutade pedido
-    type: "POST", //TIPO DE METODO
-    data: { buscarBarrios }, // valora a enviar;
-    success: function (response) {
-      const consultas = JSON.parse(response); // convertimos el string que viene de la base de datos en JSON
-      let template;
-      consultas.forEach((consultas) => {
+  let b = barrios();
+  let t = '';
+    b.features.forEach((consultas) => {
         // SEPARA LAS CONSULTAS
-        arrayBarrioDataList.push(new barrio(consultas.ID, consultas.NAME)); // agregamos al objetoutilizando la funcion
-
-        template += `<option value="${consultas.NAME}" class="${consultas.ID}"></option>`;
-      });
-      $("#buscar").html(template);
-    },
-  });
+       // agregamos al objetoutilizando la funcion
+      if(consultas.properties.name.toLowerCase().includes(buscarBarrios.toLowerCase())){
+        
+        t += `<option value="${consultas.properties.name}" class="${consultas.properties.name}"></option>`;
+        $("#buscar").html(t);
+      }
+    });
+  
 }
 
 /*
@@ -66,59 +62,92 @@ function Sugerencias(buscarBarrios, url) {
  */
 function something(event) {
   var mapPath = document.getElementsByTagName("path");
+  let b = barrios();
+  let r = $('#buscarBarrios').val();
   //Evento del input llamado del html
   if (event.keyCode == 13) {
     //verificamosque el evento sea igual a enter
-    arrayBarrioDataList.forEach((i) => {
+    b.features.forEach((i) => {
       //recorremos el objeto
-      if (i.barrio == $("#buscarBarrios").val()) {
+      if (i.properties.name.toLowerCase().includes(r.toLowerCase())) {
         // por cada iteracion verificamos que sea igualal valor del imput
         Array.from(mapPath).forEach((path) => path.remove());
-        mostrarMapa(i.barrio);
+        //Array.from(marklist).forEach((ml) => L.mark(ml).remove());
+        map.flyTo([-38.7183177,-62.2663478],13);
 
-        por(barrioActual);
+        if (marklist.length >= 0)
+          marklist.forEach((m) => m.marks.remove());
+        marklist = [];
+
+
+        mostrarMapa(i.properties.name);
+
+        por(i.geometry.coordinates);
       }
     });
   }
 }
 
 var mark = marcadores();
+var marklist = [];
+var marks;
 
-function ubicarMarcador(coordenadas,typeC, name, description,typeD) {
-  let t =  {"features": [
-    {
-      "geometry": {
-          "coordinates": [ coordenadas
-          ],
-          "type": typeC
-      },
-      "properties": {
-          "description": description,
-          "name": name
-      },
-      "type": typeD
-  },
-  ]};
-  console.log(t);
-  l.geoJson(t).addTo(map);
+
+function ubicarMarcador(titulo,descripcion) {
+  mark.features.forEach((n)=> { 
+    let latlng = [n.geometry.coordinates[1], n.geometry.coordinates[0]];
+    let name = n.properties.name.toLowerCase();
+
+
+    let mlc = () => { //Funcion que retorna un booleano
+      var a = true;
+      marklist.forEach((m) => { // por cada elemento
+       // console.log(m.latlng[0] == latlng[0] && m.latlng[1] == latlng[1]) // compara ambas lat & lng
+        if(m.latlng[0] == latlng[0] && m.latlng[1] == latlng[1])
+          a = false; // al estar marcado le impide el acceso
+      });
+      return a;
+    }
+
+      if( name == titulo.toLowerCase() && mlc()) {
+        marks = L.marker(latlng, {
+          title: titulo,
+          draggable:false,
+          opacity: 0.75
+          }).bindPopup(`<i> ${titulo} </i> <p> ${descripcion} </p>`)
+          .addTo(map);
+          map.flyTo(latlng, 16);
+        marklist.push({latlng, marks});
+      }
+      
+  })
+ 
 }
 function por(poly) {
   //publicar segmentos
   let t = "";
   mark.features.forEach((i) => {
     // por cada fila del objeto feature del archivo marcadores
-    let polygon = L.polygon(poly.features[0].geometry.coordinates); //coordinadas dentro del objeto
+    let polygon = L.polygon(poly); //coordinadas dentro del objeto
     let m = L.marker(i.geometry.coordinates); //coordenadas dentro delmarcador
     if (polygon.contains(m.getLatLng())) {
-      //verificamos si elmarcador esta dentro del poligono
-      t += `<li class="${poly.features[0].properties.name} ml-3" onclick="ubicarMarcador(${i.geometry.coordinates},${i.geometry.type},${i.properties.name},${i.properties.description}, ${i.type})">
-                   <h3>${i.properties.name}</h3> 
-                    <p>${i.properties.description}</p>
-                </li>`;
+      let name = i.properties.name; 
+      let description = i.properties.description; 
+      t += `<div id="opcionMarker" class="col-auto ${poly} " onclick="ubicarMarcador('${name}','${description}')">
+                   <div>
+                      <h3>${i.properties.name}</h3> 
+                      <p>${i.properties.description}</p>
+                   </div>
+                    <p class="line"></p>
+                </div>`;
     }
   });
-  $("#contenido ul").html(t);
+  $("#contenido").html(t);
 }
 $(document).ready(function () {
-  Sugerencias($("#buscarBarrios").val(), "bd/main.php");
+ 
+  Sugerencias($('#buscarBarrios').val());
+
+
+  
 });
