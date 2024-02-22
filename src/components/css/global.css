@@ -1,0 +1,53 @@
+#map {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    z-index: 1; /* Menor z-index para que el menú se superponga */
+    min-width: 360px;
+}
+
+#contenido {
+    position: absolute;
+    z-index: 2;
+    height: 87vh;
+    background-color: rgba(255, 255, 255, 0.76);
+    margin-top: 5%;
+    margin-left: 2%;
+}
+
+#menu {
+    position: absolute;
+    z-index: 3; /* Mayor z-index para que se superponga al mapa */
+    background-color: rgba(255, 255, 255, 0.897);
+    width: 99vw;
+    height: 3em;
+    border-radius: 15px;
+    margin: 5px;
+    min-width: 360px;
+}
+    /* Aquí puedes agregar cualquier estilo adicional para el menú */
+
+
+#detalles {
+    margin: 4px;
+}
+
+.rond {
+    border-radius: 15px;
+}
+
+.option {
+    background-color: bisque;
+}
+
+#opcionMarker {
+    border-radius: 10px;
+    display: inline-flex;
+}
+
+/* Estilo para el contenedor padre */
+#contenedor-padre {
+    position: relative; /* Esto es importante para que los elementos absolutamente posicionados se coloquen correctamente */
+    height: 100vh; /* Ajusta la altura según sea necesario */
+    width: 100vw; /* Ajusta el ancho según sea necesario */
+}

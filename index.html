@@ -1,59 +1,13 @@
-<!DOCTYPE html>
-<head>
-	<title>Coalicion Civica</title>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-   		integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-   		crossorigin=""/>		
-	<link rel="stylesheet" type="text/css" href="css/main.css"/>	
-
-
-</head>
-<body >
-	<div id="map" class=" shadow-5 col-sm-12 col-lg-12 col-xs-12 col-md-12"></div>
-
-	<nav id="menu" class="shadow-5-strong  mt-1 m-2  navbar navbar-dark rond col-lg-11 ">
-
-		<div class="input-group col-sm-4 col-md-4 col-xs-4 mx-auto rond">
-			<!--  Ponemos el buscador-->
-			<input  name="buscarBarrios" class="form-control rossnd" placeholder="Buscar Barrio.." id="buscarBarrios" list="buscar" onkeyup="something(event)"/>
-			<datalist id="buscar">
-			 <!-- opciones de barrios -->	
-			</datalist>
-		</div>
-	</nav>
-
-<section style="overflow: scroll;" id="contenido" class=" shadow-2-strong d-none d-md-none d-lg-block col-lg-3  rond">
-		
-</section>
-
-
-
-
-
-
-
-
-
-<script src="marcadores.js"></script>
-<script src="barrios.js"></script>
-
-
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   		integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>   
-	
-	<script src="js/jquery-3.6.0.min.js"></script>
-	<script src="js/popper.min.js.map"></script>
-	<script src="js/bootstrap.min.js"></script>
-	
-			
-	
-	<script src="js/main.js"></script>
-	<script src="PointInPolygon/wise-leaflet-pip.js"></script> 
-	<!-- https://github.com/hayeswise/Leaflet.PointInPolygon-->
-	
-
-	<script src="js/serch.js"></script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MapGeo</title>
+  </head>
+  <body >
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
